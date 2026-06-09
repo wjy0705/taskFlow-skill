@@ -182,27 +182,6 @@ task-flow/
 - `references/quality-checks.md`：按风险选择的质量检查参考
 - `references/four-questions-examples.md`：四问在 bug、接口、审查、项目探索中的落地示例
 
-## Repository Description
-
-Recommended GitHub description:
-
-```text
-面向 vibe coding 的四问质量流程：先理解，再选对能力，用证据验证，卡住及时止损。
-```
-
-Recommended topics:
-
-```text
-codex
-skill
-ai-agent
-workflow
-quality
-verification
-debugging
-developer-tools
-```
-
 ## Installation
 
 把整个 `task-flow` 目录放到 Codex skills 目录中。不要只复制 `SKILL.md`，因为该 skill 依赖 `references/` 和 `agents/` 中的补充文件。
