@@ -1,0 +1,7 @@
+interface:
+  display_name: "Task Flow"
+  short_description: "Explicit four-checkpoint quality workflow."
+  default_prompt: "/taskflow Run this task through the four checkpoints without skipping validation."
+
+policy:
+  allow_implicit_invocation: false
