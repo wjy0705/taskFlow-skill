@@ -33,7 +33,7 @@ function usage(exitCode = 0) {
 
 Examples:
   ${command} install --target all
-  ${command} install --target claude --force
+  ${command} install --target claude
   ${command} install --dir ~/.codex/skills/taskflow
 `);
   process.exit(exitCode);
@@ -49,6 +49,10 @@ function expandHome(input) {
 }
 
 function parseArgs(argv) {
+  if (argv[2] === "--help" || argv[2] === "-h") {
+    usage(0);
+  }
+
   const opts = {
     command: argv[2] || "help",
     target: "all",

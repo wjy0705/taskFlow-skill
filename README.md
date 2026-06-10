@@ -206,11 +206,7 @@ npm install -g github:wjy0705/taskFlow-skill
 taskflow-skill install --target all
 ```
 
-如果目标目录已经存在，需要覆盖旧版本时再加 `--force`：
-
-```powershell
-taskflow-skill install --target all --force
-```
+如果目标目录已经存在，需要覆盖旧版本时，在对应 `install` 命令后追加 `--force`。
 
 只安装到某个平台：
 
@@ -280,7 +276,7 @@ Copy-Item "$src\agents" $dst -Recurse -Force
 Hermes 也可以直接从 GitHub skill 路径安装：
 
 ```powershell
-hermes skills install wjy0705/taskFlow-skill/skills/taskflow --force
+hermes skills install wjy0705/taskFlow-skill/skills/taskflow
 ```
 
 ### Download ZIP
@@ -289,4 +285,4 @@ hermes skills install wjy0705/taskFlow-skill/skills/taskflow --force
 
 [https://github.com/wjy0705/taskFlow-skill](https://github.com/wjy0705/taskFlow-skill)
 
-下载后解压，并复制整个目录到目标 agent 的 skills 目录。目录名请使用 `taskflow`，保证命令名保持为 `/taskflow`。
+下载后解压，不要把整个仓库目录直接放进真实 skill 目录。请复制 `SKILL.md`、`references/`、`agents/` 到名为 `taskflow` 的目标目录；Hermes 也可以直接使用仓库里的 `skills/taskflow/` 镜像目录。
