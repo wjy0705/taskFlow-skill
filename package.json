@@ -2,7 +2,7 @@
   "name": "taskflow-skill",
   "version": "0.1.0",
   "description": "Explicit-only four-checkpoint agent skill for production-grade work.",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "commonjs",
   "repository": {
     "type": "git",
