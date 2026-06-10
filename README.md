@@ -199,33 +199,32 @@ task-flow/
 
 ### npm
 
-如果已经发布到 npm registry：
-
-```powershell
-npm install -g taskflow-skill
-taskflow-skill install --target all --force
-```
-
-也可以直接从 GitHub 下载并运行安装器：
+当前推荐直接从 GitHub 安装 npm 包：
 
 ```powershell
 npm install -g github:wjy0705/taskFlow-skill
+taskflow-skill install --target all
+```
+
+如果目标目录已经存在，需要覆盖旧版本时再加 `--force`：
+
+```powershell
 taskflow-skill install --target all --force
 ```
 
-也可以只安装到某个平台：
+只安装到某个平台：
 
 ```powershell
-taskflow-skill install --target codex --force
-taskflow-skill install --target claude --force
-taskflow-skill install --target hermes --force
+taskflow-skill install --target codex
+taskflow-skill install --target claude
+taskflow-skill install --target hermes
 ```
 
 本地开发时可以在仓库根目录运行：
 
 ```powershell
 npm install -g .
-taskflow-skill install --target all --force
+taskflow-skill install --target all
 ```
 
 安装完成后，用 `/taskflow` 主动触发。
