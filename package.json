@@ -1,0 +1,42 @@
+{
+  "name": "taskflow-skill",
+  "version": "0.1.0",
+  "description": "Explicit-only four-checkpoint agent skill for production-grade work.",
+  "license": "UNLICENSED",
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wjy0705/taskFlow-skill.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wjy0705/taskFlow-skill/issues"
+  },
+  "homepage": "https://github.com/wjy0705/taskFlow-skill#readme",
+  "bin": {
+    "taskflow-skill": "bin/taskflow-install.js"
+  },
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "references/",
+    "agents/",
+    "skills/",
+    "bin/"
+  ],
+  "scripts": {
+    "sync:layout": "node bin/taskflow-install.js sync-layout",
+    "pack:check": "npm pack --dry-run",
+    "test": "npm run sync:layout && npm pack --dry-run"
+  },
+  "keywords": [
+    "agent-skill",
+    "codex",
+    "claude-code",
+    "hermes",
+    "workflow",
+    "verification"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

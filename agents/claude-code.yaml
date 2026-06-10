@@ -1,0 +1,12 @@
+interface:
+  display_name: "Task Flow"
+  command: "/taskflow"
+  install_path: "~/.claude/skills/taskflow/SKILL.md"
+  short_description: "Explicit four-checkpoint quality workflow."
+
+policy:
+  allow_implicit_invocation: false
+
+notes:
+  - "Claude Code derives the slash command from the skill directory name, so install this skill in a directory named taskflow."
+  - "The npm installer writes disable-model-invocation: true and user-invocable: true into the Claude target copy for manual invocation only."

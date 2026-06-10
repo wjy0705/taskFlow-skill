@@ -2,7 +2,7 @@
 
 A four-checkpoint quality workflow for Codex: understand, choose capabilities, verify with evidence, and stop when blocked.
 
-Task Flow 是一个面向 Codex 的显式质量流程。它不自动接管普通任务，也不强迫使用某个 skill。它只在用户主动触发时，要求 Agent 按四个关口推进复杂任务：
+Task Flow 是一个面向 Codex、Claude Code 和 Hermes 的显式质量流程。它不自动接管普通任务，也不强迫使用某个 skill。它只在用户主动触发时，要求 Agent 按四个关口推进复杂任务：
 
 ```text
 理解问题 -> 选对能力 -> 用证据验证 -> 卡住时止损
@@ -12,14 +12,10 @@ Task Flow 是一个面向 Codex 的显式质量流程。它不自动接管普通
 
 ## How To Use
 
-Task Flow 是显式触发的。只有用户输入以下任一触发词时才启动：
+Task Flow 是显式触发的。只有用户输入以下命令时才启动：
 
 ```text
 /taskflow
-/tf
-四问
-严格模式
-别跳步骤
 ```
 
 普通 bug 修复、功能开发、代码审查、重构、部署请求不会自动触发 Task Flow。
@@ -31,11 +27,11 @@ Task Flow 是显式触发的。只有用户输入以下任一触发词时才启�
 ```
 
 ```text
-严格模式，别跳步骤，帮我审查这次改动
+/taskflow 帮我审查这次改动，按四问推进，不要跳过验证
 ```
 
 ```text
-/tf 帮我给这个接口补一个安全的实现，并验证主要风险
+/taskflow 帮我给这个接口补一个安全的实现，并验证主要风险
 ```
 
 Agent 启动后会先给出简短路线：
@@ -112,7 +108,7 @@ Task Flow 不是固定流水线。它会根据任务风险选择验证方式。
 
 ### Explicit Only
 
-Task Flow 不自动触发。它适合用户明确要求严格流程、四问、不要跳步骤、或需要更高可靠性的复杂任务。
+Task Flow 不自动触发。它适合用户通过 `/taskflow` 明确要求严格流程、四问、不要跳步骤，或需要更高可靠性的复杂任务。
 
 ### Workflow First
 
@@ -170,21 +166,78 @@ Task Flow 不自动触发。它适合用户明确要求严格流程、四问、�
 task-flow/
 ├── SKILL.md
 ├── README.md
+├── package.json
+├── bin/
+│   └── taskflow-install.js
 ├── agents/
+│   ├── claude-code.yaml
+│   ├── hermes.yaml
 │   └── openai.yaml
+├── skills/
+│   └── taskflow/
+│       ├── agents/
+│       ├── references/
+│       └── SKILL.md
 └── references/
     ├── quality-checks.md
     └── four-questions-examples.md
 ```
 
 - `SKILL.md`：核心四问流程和执行规则
+- `package.json`：npm 下载和安装入口
+- `bin/taskflow-install.js`：把 skill 安装到 Codex、Claude Code 或 Hermes 目录的 CLI
 - `agents/openai.yaml`：Codex UI 元数据，并关闭隐式触发
+- `agents/claude-code.yaml`：Claude Code 适配说明
+- `agents/hermes.yaml`：Hermes 适配说明
+- `skills/taskflow/`：给 skill tap / catalog 类安装器使用的镜像布局
 - `references/quality-checks.md`：按风险选择的质量检查参考
 - `references/four-questions-examples.md`：四问在 bug、接口、审查、项目探索中的落地示例
 
 ## Installation
 
-把整个 `task-flow` 目录放到 Codex skills 目录中。不要只复制 `SKILL.md`，因为该 skill 依赖 `references/` 和 `agents/` 中的补充文件。
+不要只复制 `SKILL.md`，因为该 skill 依赖 `references/` 和 `agents/` 中的补充文件。也不要把 `README.md`、`package.json`、`bin/` 复制进真实 skill 目录；这些只用于发布和安装。
+
+### npm
+
+如果已经发布到 npm registry：
+
+```powershell
+npm install -g taskflow-skill
+taskflow-skill install --target all --force
+```
+
+也可以直接从 GitHub 下载并运行安装器：
+
+```powershell
+npm install -g github:wjy0705/taskFlow-skill
+taskflow-skill install --target all --force
+```
+
+也可以只安装到某个平台：
+
+```powershell
+taskflow-skill install --target codex --force
+taskflow-skill install --target claude --force
+taskflow-skill install --target hermes --force
+```
+
+本地开发时可以在仓库根目录运行：
+
+```powershell
+npm install -g .
+taskflow-skill install --target all --force
+```
+
+安装完成后，用 `/taskflow` 主动触发。
+
+默认安装路径：
+
+| Target | Path |
+|---|---|
+| Codex | `$CODEX_HOME/skills/taskflow`，未设置时为 `~/.codex/skills/taskflow` |
+| Codex legacy | `~/.codex/skills/taskflow` |
+| Claude Code | `~/.claude/skills/taskflow` |
+| Hermes | `~/.hermes/skills/productivity/taskflow` |
 
 ### Clone
 
@@ -192,15 +245,43 @@ task-flow/
 git clone https://github.com/wjy0705/taskFlow-skill.git
 ```
 
-然后复制整个仓库目录到 Codex skills 目录。
+然后复制 skill 运行所需文件到 Codex skills 目录。
 
 Windows 示例：
 
 ```powershell
 $src = "C:\path\to\taskFlow-skill"
-$dst = "$env:USERPROFILE\.codex\skills\task-flow"
+$dst = "$env:USERPROFILE\.codex\skills\taskflow"
 New-Item -ItemType Directory -Force $dst
-Copy-Item "$src\*" $dst -Recurse -Force
+Copy-Item "$src\SKILL.md" $dst -Force
+Copy-Item "$src\references" $dst -Recurse -Force
+Copy-Item "$src\agents" $dst -Recurse -Force
+```
+
+Claude Code 要把目录命名为 `taskflow`，这样斜杠命令才是 `/taskflow`。推荐用 npm 安装器生成 Claude 专属 frontmatter；如果手工复制，需要在目标 `SKILL.md` 的 frontmatter 中加入 `disable-model-invocation: true` 和 `user-invocable: true`：
+
+```powershell
+$dst = "$env:USERPROFILE\.claude\skills\taskflow"
+New-Item -ItemType Directory -Force $dst
+Copy-Item "$src\SKILL.md" $dst -Force
+Copy-Item "$src\references" $dst -Recurse -Force
+Copy-Item "$src\agents" $dst -Recurse -Force
+```
+
+Hermes 可以放在 skill 分类目录下：
+
+```powershell
+$dst = "$env:USERPROFILE\.hermes\skills\productivity\taskflow"
+New-Item -ItemType Directory -Force $dst
+Copy-Item "$src\SKILL.md" $dst -Force
+Copy-Item "$src\references" $dst -Recurse -Force
+Copy-Item "$src\agents" $dst -Recurse -Force
+```
+
+Hermes 也可以直接从 GitHub skill 路径安装：
+
+```powershell
+hermes skills install wjy0705/taskFlow-skill/skills/taskflow --force
 ```
 
 ### Download ZIP
@@ -209,4 +290,4 @@ Copy-Item "$src\*" $dst -Recurse -Force
 
 [https://github.com/wjy0705/taskFlow-skill](https://github.com/wjy0705/taskFlow-skill)
 
-下载后解压，并复制整个目录到 Codex skills 目录。
+下载后解压，并复制整个目录到目标 agent 的 skills 目录。目录名请使用 `taskflow`，保证命令名保持为 `/taskflow`。

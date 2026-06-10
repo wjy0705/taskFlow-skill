@@ -1,0 +1,12 @@
+interface:
+  display_name: "Task Flow"
+  command: "/taskflow"
+  install_path: "~/.hermes/skills/productivity/taskflow/SKILL.md"
+  short_description: "Explicit four-checkpoint quality workflow."
+
+policy:
+  allow_implicit_invocation: false
+
+notes:
+  - "Hermes exposes installed skills as slash commands and uses the SKILL.md name/frontmatter for skill metadata."
+  - "For a GitHub tap, keep the mirrored layout under skills/taskflow/."
