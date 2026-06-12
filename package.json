@@ -1,6 +1,6 @@
 {
   "name": "taskflow-skill",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Explicit-only four-checkpoint agent skill for production-grade work.",
   "license": "MIT",
   "type": "commonjs",
