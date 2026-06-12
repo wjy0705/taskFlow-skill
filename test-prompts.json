@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "prompt": "登录功能报500错误，帮我排查一下",
+    "expected": "触发 Task Flow → 问1：先复现/读错误栈 → 问2：选 systematic-debugging 或直接诊断 → 问3：curl验证修复 → 问4：卡住换方向。输出含完整验证证据"
+  },
+  {
+    "id": 2,
+    "prompt": "给用户管理模块加一个批量导出Excel的功能",
+    "expected": "触发 Task Flow → 问1：读现有代码结构 → 问2：判断需要实现+验证能力 → 问3：curl + 文件下载验证 → 问4：依赖库不可用时报替代方案。输出含 capability plan"
+  },
+  {
+    "id": 3,
+    "prompt": "帮我审查一下UserController的代码改动",
+    "expected": "触发 Task Flow → 问1：读 diff + 上下文 → 问2：选 java-code-review 或手工审查 → 问3：每个问题附行号 → 问4：看不懂就问。输出含风险分级"
+  }
+]
